@@ -1,0 +1,8 @@
+---
+
+rsnapshot_master_host: False
+rsnapshot_master_host_user:  "{{ ansible_ssh_user }}"
+rsnapshot_master_ssh_key: id_rsa
+
+# User used by the rsnapshot master to connect on the configured host
+rsnapshot_slave_user: backupuser

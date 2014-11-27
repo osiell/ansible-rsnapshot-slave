@@ -1,0 +1,10 @@
+---
+
+- name: Install required packages
+  apt:  pkg=rsync,sudo
+        state=installed
+        update_cache=yes
+
+- name: Install the 'rsync-wrapper.sh' script, called by the master
+  copy: src=rsync-wrapper.sh dest=/usr/local/bin/rsync-wrapper.sh
+        owner=root group=root mode=0755

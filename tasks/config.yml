@@ -1,0 +1,24 @@
+---
+
+- name: Add backup system user
+  user: name={{ rsnapshot_slave_user }} shell=/bin/bash
+        update_password=on_create
+
+- name: Sudo configuration for the backup system user
+  template: src=sudo_backupuser dest=/etc/sudoers.d/{{ rsnapshot_slave_user }}
+            owner=root group=root mode=0440
+  when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 6
+
+- name: Retrieve the SSH public key on the rsnapshot master
+  delegate_to: "{{ rsnapshot_master_host }}"
+  remote_user: "{{ rsnapshot_master_host_user }}"
+  command: "cat $HOME/.ssh/{{ rsnapshot_master_ssh_key }}.pub"
+  when: rsnapshot_master_host not in [False, 'localhost', '127.0.0.1']
+        and rsnapshot_master_host != False
+  register: rsnapshot_master_ssh_pubkey
+  changed_when: False
+
+- name: Set the SSH public key for the backup system user
+  authorized_key: user={{ rsnapshot_slave_user }}
+                  key="{{ rsnapshot_master_ssh_pubkey.stdout }}"
+  when: rsnapshot_master_ssh_pubkey
