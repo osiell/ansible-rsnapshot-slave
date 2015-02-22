@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  author: Sébastien Alix
+  description: Ansible role to install rsync and configure the system to be
+    backed up by the rsnapshot-master role.
+    For this purpose, this role creates a system user with sudo privileges on
+    the rsync program. The public SSH key is retrieved from the master host
+    (defined by the rsnapshot-master role) and added to the user's authorized
+    keys.
+  company: OSIELL
+  license: GPLv3
+  min_ansible_version: 1.5
+  platforms:
+    - name: Debian
+      versions:
+        - squeeze
+        - wheezy
+        - jessie
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+  categories:
+    - system
+dependencies: []

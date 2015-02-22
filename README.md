@@ -3,8 +3,9 @@
 Ansible role to install rsync and configure the system to be backed up by
 the `rsnapshot-master` role.
 For this purpose, this role creates a system user with sudo privileges on
-the `rsync` program. The public SSH key is get from the master host (defined by
-the `rsnapshot-master` role) and added to the user's authorized keys.
+the `rsync` program. The public SSH key is retrieved from the master host
+(defined by the `rsnapshot-master` role) and added to the user's authorized
+keys.
 
 Minimum Ansible Version: 1.5
 
