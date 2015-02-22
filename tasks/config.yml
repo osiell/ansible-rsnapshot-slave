@@ -13,8 +13,6 @@
   delegate_to: "{{ rsnapshot_master_host }}"
   remote_user: "{{ rsnapshot_master_host_user }}"
   command: "cat $HOME/.ssh/{{ rsnapshot_master_ssh_key }}.pub"
-  when: rsnapshot_master_host not in [False, 'localhost', '127.0.0.1']
-        and rsnapshot_master_host != False
   register: rsnapshot_master_ssh_pubkey
   changed_when: False
 

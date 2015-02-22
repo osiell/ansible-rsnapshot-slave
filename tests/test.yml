@@ -1,0 +1,28 @@
+---
+
+# master
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible-rsnapshot-master
+  vars:
+    - rsnapshot_config_backup:
+        - name: LOCALHOST
+          points:
+            - [backup, /home/, localhost/]
+            - [backup, /etc/, localhost/]
+            - [backup, /usr/local/, localhost/]
+        - name: SLAVE
+          points:
+            - [backup, 'backupuser@localhost:/home', slave/]
+            - [backup, 'backupuser@localhost:/etc', slave/]
+
+# slave
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible-rsnapshot-slave
+  vars:
+    - rsnapshot_slave_user: backupuser
+    - rsnapshot_master_host: localhost
+    - rsnapshot_master_host_user: root
