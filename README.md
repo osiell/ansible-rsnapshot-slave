@@ -6,10 +6,17 @@ For this purpose, this role creates a system user with sudo privileges on
 the `rsync` program. The public SSH key is get from the master host (defined by
 the `rsnapshot-master` role) and added to the user's authorized keys.
 
+Minimum Ansible Version: 1.4
+
 ## Supported Platforms
 
-- Debian Wheezy (7)
-- Ubuntu Trusty (14.04)
+* Debian
+    - squeeze   (6)
+    - wheezy    (7)
+    - jessie    (8)
+* Ubuntu
+    - precise   (12.04)
+    - trusty    (14.04)
 
 ## Variables
 
