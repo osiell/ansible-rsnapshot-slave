@@ -1,4 +1,4 @@
-# rsnapshot (slave)
+# rsnapshot (slave) [![Build Status](https://travis-ci.org/osiell/ansible-rsnapshot-slave.png)](https://travis-ci.org/osiell/ansible-rsnapshot-slave)
 
 Ansible role to install rsync and configure the system to be backed up by
 the `rsnapshot-master` role.
