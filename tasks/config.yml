@@ -1,7 +1,7 @@
 ---
 
 - name: Add backup system user
-  user: name={{ rsnapshot_slave_user }} shell=/bin/bash
+  user: name={{ rsnapshot_slave_user }} shell={{ rsnapshot_slave_user_shell }}
         update_password=on_create
 
 - name: Sudo configuration for the backup system user
