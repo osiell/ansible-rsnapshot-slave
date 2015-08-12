@@ -6,3 +6,4 @@ rsnapshot_master_ssh_key: id_rsa
 
 # User used by the rsnapshot master to connect on the configured host
 rsnapshot_slave_user: backupuser
+rsnapshot_slave_user_shell: /bin/bash
