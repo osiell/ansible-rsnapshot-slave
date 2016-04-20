@@ -4,6 +4,13 @@
   user: name={{ rsnapshot_slave_user }} shell={{ rsnapshot_slave_user_shell }}
         update_password=on_create
 
+- name: Sudoers configuration to include sudoers.d/*
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "^#?\\s*includedir.+/etc/sudoers.d"
+    line: "includedir /etc/sudoers.d"
+    state: present
+
 - name: Sudo configuration for the backup system user
   template: src=sudo_backupuser dest=/etc/sudoers.d/{{ rsnapshot_slave_user }}
             owner=root group=root mode=0440
