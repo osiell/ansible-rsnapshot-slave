@@ -1,11 +1,15 @@
 ---
 
-- include: install.yml
+- import_tasks: install.yml
   tags:
+    - backup
+    - rsnapshot
     - rsnapshot_slave
     - rsnapshot_slave_install
 
-- include: config.yml
+- import_tasks: config.yml
   tags:
+    - backup
+    - rsnapshot
     - rsnapshot_slave
     - rsnapshot_slave_config

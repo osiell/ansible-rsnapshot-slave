@@ -9,15 +9,8 @@
             owner=root group=root mode=0440
   when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 6
 
-- name: Retrieve the SSH public key on the rsnapshot master
-  delegate_to: "{{ rsnapshot_master_host }}"
-  remote_user: "{{ rsnapshot_master_host_user }}"
-  command: "cat $HOME/.ssh/{{ rsnapshot_master_ssh_key }}.pub"
-  register: rsnapshot_master_ssh_pubkey
-  changed_when: False
-  always_run: True
-
-- name: Set the SSH public key for the backup system user
-  authorized_key: user={{ rsnapshot_slave_user }}
-                  key="{{ rsnapshot_master_ssh_pubkey.stdout }}"
-  when: rsnapshot_master_ssh_pubkey
+# Put SSH relative tasks in another file to bypass the Ansible bug #15746:
+#   https://github.com/ansible/ansible/issues/15746
+# ('delegate_to' statement is evaluated before 'when')
+- include_tasks: config_ssh.yml
+  when: rsnapshot_master_host and rsnapshot_master_host_user
