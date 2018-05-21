@@ -9,6 +9,12 @@
             owner=root group=root mode=0440
   when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 6
 
+# Ensure that the master user and ssh-key have been generated
+# On a multi-host setup this prevent issues when backup-master
+# is configured *after* a client
+- include_tasks: config_master.yml
+  when: rsnapshot_slave_manage_minimal_required_master_configuration
+
 # Put SSH relative tasks in another file to bypass the Ansible bug #15746:
 #   https://github.com/ansible/ansible/issues/15746
 # ('delegate_to' statement is evaluated before 'when')

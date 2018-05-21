@@ -1,0 +1,36 @@
+---
+
+- name: Check if master host user exists
+  command: "getent passwd {{ rsnapshot_master_host_user }}"
+  register: rsnapshot_master_host_user_exists
+  delegate_to: "{{ rsnapshot_master_host }}"
+  failed_when: False
+  changed_when: False
+  check_mode: no
+
+- name: Check if master SSH key exists
+  stat:
+    path: "$HOME/.ssh/{{ rsnapshot_master_ssh_key }}.pub"
+  delegate_to: "{{ rsnapshot_master_host }}"
+  become: yes
+  become_user: "{{ rsnapshot_master_host_user }}"
+  register: rsnapshot_master_key_exists
+
+- name: Create master SSH key and user if master host user doesn't exists
+  user:
+    name: "{{ rsnapshot_master_host_user }}"
+    generate_ssh_key: yes
+    ssh_key_file: ".ssh/{{ rsnapshot_master_ssh_key }}"
+  when: not rsnapshot_master_key_exists.stat.exists and rsnapshot_master_host_user_exists.rc != 0
+  delegate_to: "{{ rsnapshot_master_host }}"
+  become: yes
+  become_user: root
+
+- name: Create master SSH key if it doesn't exist
+  shell: ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/{{ rsnapshot_master_ssh_key }} -q -N ""
+  args:
+    creates: "$HOME/.ssh/{{ rsnapshot_master_ssh_key }}"
+  when: not rsnapshot_master_key_exists.stat.exists and rsnapshot_master_host_user_exists.rc == 0
+  delegate_to: "{{ rsnapshot_master_host }}"
+  become: yes
+  become_user: "{{ rsnapshot_master_host_user }}"
