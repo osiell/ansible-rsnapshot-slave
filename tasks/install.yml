@@ -5,8 +5,8 @@
     pkg:
       - rsync
       - sudo
-  state: present
-  update_cache: yes
+    state: present
+    update_cache: yes
 
 - name: Install the 'rsync-wrapper.sh' script, called by the master
   copy:
