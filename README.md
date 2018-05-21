@@ -27,7 +27,8 @@ rsnapshot_master_host_user:  root
 rsnapshot_master_ssh_key: id_rsa
 
 # User used by the rsnapshot master to connect on the configured host
-rsnapshot_slave_user: backupuserrsnapshot_slave_user_shell: /bin/bash
+rsnapshot_slave_user: backupuser
+rsnapshot_slave_user_shell: /bin/bash
                                 
 # Allow rsnapshot client to create master user and ssh-keygen if it doesn't exists
 rsnapshot_slave_manage_minimal_required_master_configuration: True
