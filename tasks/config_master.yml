@@ -5,6 +5,7 @@
     name: "{{ rsnapshot_master_host_user }}"
     generate_ssh_key: yes
     ssh_key_file: ".ssh/{{ rsnapshot_master_ssh_key }}"
+    ssh_key_comment: "rsnapshot master user {{ rsnapshot_master_host_user }} at {{ rsnapshot_master_host }}"
   delegate_to: "{{ rsnapshot_master_host }}"
   become: yes
   become_user: root
