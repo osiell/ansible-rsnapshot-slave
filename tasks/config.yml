@@ -11,7 +11,7 @@
   user:
     name: "{{ rsnapshot_slave_user }}"
     password: "{{ rsnapshot_slave_user_passwd | password_hash('sha512') }}"
-  when: rsnapshot_slave_user_passwd
+  when: rsnapshot_slave_user_passwd != ""
 
 - name: Sudo configuration for the backup system user
   template:
