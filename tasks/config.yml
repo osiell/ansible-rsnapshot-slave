@@ -1,13 +1,32 @@
 ---
 
 - name: Add backup system user
-  user: name={{ rsnapshot_slave_user }} shell={{ rsnapshot_slave_user_shell }}
-        update_password=on_create
+  user:
+    name: "{{ rsnapshot_slave_user }}"
+    shell: "{{ rsnapshot_slave_user_shell }}"
+
+# Account with no password may be locked down
+# which prevent logging through SSH even with ssh key
+- name: Set password for backup user if provided
+  user:
+    name: "{{ rsnapshot_slave_user }}"
+    password: "{{ rsnapshot_slave_user_passwd | password_hash('sha512') }}"
+  when: rsnapshot_slave_user_passwd != ""
 
 - name: Sudo configuration for the backup system user
-  template: src=sudo_backupuser dest=/etc/sudoers.d/{{ rsnapshot_slave_user }}
-            owner=root group=root mode=0440
+  template:
+    src: sudo_backupuser
+    dest: "/etc/sudoers.d/{{ rsnapshot_slave_user }}"
+    owner: root
+    group: root
+    mode: 0440
   when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 6
+
+# Ensure that the master user and ssh-key have been generated
+# On a multi-host setup this prevent issues when backup-master
+# is configured *after* a client
+- include_tasks: config_master.yml
+  when: rsnapshot_slave_manage_minimal_required_master_configuration
 
 # Put SSH relative tasks in another file to bypass the Ansible bug #15746:
 #   https://github.com/ansible/ansible/issues/15746

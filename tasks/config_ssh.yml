@@ -2,11 +2,12 @@
 
 - name: Retrieve the SSH public key on the rsnapshot master
   delegate_to: "{{ rsnapshot_master_host }}"
-  remote_user: "{{ rsnapshot_master_host_user }}"
+  become: yes
+  become_user: "{{ rsnapshot_master_host_user }}"
   command: "cat $HOME/.ssh/{{ rsnapshot_master_ssh_key }}.pub"
   register: rsnapshot_master_ssh_pubkey
   changed_when: False
-  always_run: True
+  check_mode: no
 
 - name: Set the SSH public key for the backup system user
   authorized_key:
