@@ -2,7 +2,7 @@
 
 - name: Install required packages
   apt:  pkg=rsync,sudo
-        state=installed
+        state=present
         update_cache=yes
 
 - name: Install the 'rsync-wrapper.sh' script, called by the master
